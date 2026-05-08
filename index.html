@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PostureAI（ポスチャーエーアイ）｜施術効果を、見える化する。</title>
+<meta name="description" content="施術院のためのAI姿勢分析サービス。写真6枚で30秒診断、QRコードで患者と共有。月¥9,800〜・7日間無料体験。">
+<meta property="og:title" content="PostureAI（ポスチャーエーアイ）｜施術効果を、見える化する。">
+<meta property="og:description" content="施術院のためのAI姿勢分析サービス。月¥9,800〜・7日間無料体験。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@500;700;900&family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy: #0A1F3D;
+  --navy-soft: #1A2F4A;
+  --navy-deep: #061427;
+  --gold: #B8956A;
+  --gold-light: #D4B894;
+  --gold-deep: #8F6F45;
+  --bg: #F7F5F0;
+  --bg-cream: #EFEAE0;
+  --bg-warm: #FAF7F0;
+  --text: #1A1F36;
+  --text-mid: #4A5168;
+  --text-light: #8A90A8;
+  --border: #E0DBD0;
+  --border-soft: #ECE7DC;
+  --white: #FFFFFF;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans JP', 'Inter', sans-serif;
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "palt";
+}
+h1, h2, h3, h4 {
+  font-family: 'Noto Serif JP', 'Playfair Display', serif;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.005em;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; transition: all 0.3s ease; }
+
+/* Container */
+.container { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 768px) { .container { padding: 0 24px; } }
+
+/* Animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.fade-in {
+  animation: fadeUp 0.8s ease-out backwards;
+}
+.fade-in.delay-1 { animation-delay: 0.1s; }
+.fade-in.delay-2 { animation-delay: 0.2s; }
+.fade-in.delay-3 { animation-delay: 0.3s; }
+.fade-in.delay-4 { animation-delay: 0.4s; }
+
+/* Header */
+.header {
+  position: sticky; top: 0;
+  background: rgba(247, 245, 240, 0.85);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(224, 219, 208, 0.6);
+  z-index: 100;
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 0;
+}
+.logo-wrap { display: flex; align-items: baseline; gap: 10px; }
+.logo {
+  font-family: 'Playfair Display', 'Noto Serif JP', serif;
+  font-size: 24px; font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+}
+.logo .dot { color: var(--gold); }
+.logo-jp {
+  font-size: 11px;
+  color: var(--text-light);
+  letter-spacing: 0.15em;
+  font-weight: 500;
+}
+.btn-link {
+  background: var(--navy); color: var(--white);
+  padding: 13px 26px; border-radius: 100px;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: all 0.3s;
+}
+.btn-link:hover {
+  background: var(--navy-soft);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(10, 31, 61, 0.2);
+}
+
+/* Hero */
+.hero {
+  padding: 140px 0 160px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-cream) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -10%; right: -300px;
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(184, 149, 106, 0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -200px; left: -200px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(10, 31, 61, 0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner { position: relative; z-index: 1; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 600;
+  color: var(--gold-deep);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 36px;
+  padding: 10px 18px;
+  background: rgba(184, 149, 106, 0.1);
+  border-radius: 100px;
+  border: 1px solid rgba(184, 149, 106, 0.2);
+}
+.hero-tag::before {
+  content: ''; display: inline-block;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold); animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.hero h1 {
+  font-size: clamp(38px, 6vw, 68px);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 36px;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+  max-width: 900px;
+}
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(120deg, var(--gold) 0%, var(--gold-deep) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  display: inline-block;
+}
+.hero p.lead {
+  font-size: clamp(16px, 1.6vw, 19px);
+  color: var(--text-mid);
+  max-width: 660px;
+  margin-bottom: 56px;
+  line-height: 2.1;
+  font-weight: 400;
+}
+.hero-buttons {
+  display: flex; gap: 20px; flex-wrap: wrap; align-items: center;
+}
+.btn-primary {
+  background: var(--navy); color: var(--white);
+  padding: 20px 40px;
+  border-radius: 100px;
+  font-size: 15px; font-weight: 600;
+  letter-spacing: 0.02em;
+  display: inline-flex; align-items: center; gap: 10px;
+  transition: all 0.3s;
+  box-shadow: 0 6px 24px rgba(10, 31, 61, 0.18);
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.2), transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+.btn-primary:hover {
+  background: var(--navy-soft);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(10, 31, 61, 0.28);
+}
+.btn-primary:hover::after { transform: translateX(100%); }
+.btn-primary .arrow { transition: transform 0.3s; }
+.btn-primary:hover .arrow { transform: translateX(6px); }
+.btn-secondary {
+  color: var(--navy);
+  font-weight: 500; font-size: 15px;
+  padding: 20px 24px;
+  border-bottom: 1.5px solid var(--navy);
+  transition: all 0.3s;
+}
+.btn-secondary:hover {
+  color: var(--gold-deep);
+  border-color: var(--gold-deep);
+}
+.hero-meta {
+  margin-top: 40px;
+  font-size: 13px;
+  color: var(--text-light);
+  letter-spacing: 0.05em;
+}
+.hero-meta span { margin: 0 16px; opacity: 0.4; font-weight: 300; }
+
+/* Section common */
+.section { padding: 140px 0; position: relative; }
+@media (max-width: 768px) { .section { padding: 90px 0; } }
+.section-tag {
+  font-size: 11px; font-weight: 600;
+  color: var(--gold-deep);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 18px;
+  position: relative;
+  padding-left: 32px;
+}
+.section-tag::before {
+  content: ''; position: absolute;
+  left: 0; top: 50%;
+  width: 20px; height: 1px;
+  background: var(--gold);
+}
+.section-title {
+  font-size: clamp(30px, 4.5vw, 50px);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--navy);
+  margin-bottom: 28px;
+  max-width: 760px;
+  line-height: 1.35;
+}
+.section-subtitle {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 17px;
+  color: var(--text-mid);
+  max-width: 660px;
+  line-height: 2.1;
+  margin-bottom: 80px;
+  font-weight: 400;
+}
+
+/* Reality section - 2x2 grid */
+.reality { background: var(--white); }
+.reality-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+@media (max-width: 768px) {
+  .reality-grid { grid-template-columns: 1fr; gap: 20px; }
+}
+.reality-card {
+  background: var(--bg-warm);
+  padding: 56px 48px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s;
+  border: 1px solid var(--border-soft);
+}
+@media (max-width: 768px) {
+  .reality-card { padding: 40px 32px; }
+}
+.reality-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(184, 149, 106, 0.08) 0%, transparent 70%);
+  transition: opacity 0.4s;
+}
+.reality-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px rgba(10, 31, 61, 0.08);
+}
+.reality-card .number {
+  font-family: 'Playfair Display', serif;
+  font-size: 80px; font-weight: 700;
+  color: var(--gold-light);
+  line-height: 1;
+  margin-bottom: 24px;
+  letter-spacing: -0.04em;
+  display: inline-block;
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.reality-card h3 {
+  font-size: 24px; font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+.reality-card p {
+  font-size: 15px; color: var(--text-mid);
+  line-height: 2;
+}
+
+/* Solution section */
+.solution {
+  background: var(--bg-cream);
+  position: relative;
+  overflow: hidden;
+}
+.solution::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+  pointer-events: none;
+}
+.solution > .container { position: relative; }
+.solution-flow {
+  margin-top: 64px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  position: relative;
+}
+@media (max-width: 768px) {
+  .solution-flow { grid-template-columns: repeat(2, 1fr); }
+}
+.flow-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 44px 32px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 1px 3px rgba(10, 31, 61, 0.04);
+  transition: all 0.4s;
+  border: 1px solid var(--border-soft);
+}
+.flow-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px rgba(10, 31, 61, 0.1);
+  border-color: var(--gold-light);
+}
+.flow-card .step-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 12px; font-weight: 600;
+  color: var(--gold-deep);
+  letter-spacing: 0.25em;
+  margin-bottom: 20px;
+  display: block;
+}
+.flow-card .icon-emoji {
+  font-size: 40px;
+  margin-bottom: 20px;
+  display: inline-block;
+  filter: grayscale(0.2);
+}
+.flow-card h4 {
+  font-size: 17px; font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+.flow-card p { font-size: 13px; color: var(--text-mid); line-height: 1.8; }
+
+/* Features section */
+.features { background: var(--white); }
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 96px;
+  row-gap: 80px;
+  margin-top: 80px;
+}
+@media (max-width: 768px) {
+  .features-grid { grid-template-columns: 1fr; column-gap: 0; row-gap: 64px; }
+}
+.feature-large {
+  border-top: 1px solid var(--border);
+  padding-top: 56px;
+  position: relative;
+}
+.feature-large::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: 0;
+  width: 60px; height: 1px;
+  background: var(--gold);
+}
+.feature-large .feat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px; font-weight: 600;
+  color: var(--gold-deep);
+  letter-spacing: 0.25em;
+  margin-bottom: 18px;
+  display: block;
+}
+.feature-large h3 {
+  font-size: 28px; font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 22px;
+  letter-spacing: -0.015em;
+  line-height: 1.4;
+}
+.feature-large p {
+  font-size: 15px; color: var(--text-mid);
+  line-height: 2.1;
+  margin-bottom: 28px;
+}
+.feature-tag {
+  display: inline-block;
+  font-size: 12px; font-weight: 500;
+  color: var(--navy);
+  background: var(--bg-cream);
+  padding: 7px 16px;
+  border-radius: 100px;
+  margin: 0 8px 8px 0;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+}
+.feature-tag:hover {
+  background: var(--white);
+  border-color: var(--gold);
+  color: var(--gold-deep);
+}
+
+/* Specs section - upgraded "Innovation" feel */
+.specs {
+  background: var(--navy-deep);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+.specs::before {
+  content: '';
+  position: absolute;
+  top: -30%; left: -10%;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(184, 149, 106, 0.18) 0%, transparent 60%);
+}
+.specs::after {
+  content: '';
+  position: absolute;
+  bottom: -30%; right: -10%;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(10, 31, 61, 0.5) 0%, transparent 60%);
+}
+.specs > .container { position: relative; z-index: 1; }
+.specs .section-title { color: var(--white); }
+.specs .section-subtitle { color: rgba(255, 255, 255, 0.7); }
+.specs .section-tag { color: var(--gold-light); }
+.specs .section-tag::before { background: var(--gold-light); }
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 56px 64px;
+  margin-top: 80px;
+}
+@media (max-width: 768px) {
+  .specs-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+}
+.spec-item {
+  position: relative;
+  padding-left: 32px;
+  border-left: 2px solid var(--gold);
+}
+.spec-item .spec-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 56px; font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 14px;
+  display: block;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #FFF 0%, var(--gold-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.spec-item .spec-label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.04em;
+  line-height: 1.8;
+  font-weight: 500;
+}
+
+/* Story section */
+.story {
+  background: var(--bg-warm);
+  position: relative;
+  overflow: hidden;
+}
+.story::before {
+  content: '';
+  position: absolute;
+  top: 30%; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(184, 149, 106, 0.08) 0%, transparent 70%);
+}
+.story-content {
+  max-width: 760px;
+  margin: 0 auto;
+  position: relative;
+}
+.story-text {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 19px;
+  line-height: 2.3;
+  color: var(--text);
+  margin-bottom: 36px;
+  font-weight: 500;
+}
+.story-text:first-of-type::first-letter {
+  font-size: 56px;
+  font-weight: 700;
+  color: var(--gold);
+  float: left;
+  line-height: 1;
+  padding-right: 12px;
+  margin-top: 6px;
+}
+.story-signature {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 15px;
+  color: var(--gold-deep);
+  margin-top: 56px;
+  padding-top: 36px;
+  border-top: 1px solid var(--border);
+}
+.story-signature strong {
+  display: block;
+  color: var(--navy);
+  font-size: 20px;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+/* Monitor section (先行導入院) */
+.monitor {
+  background: var(--white);
+  position: relative;
+}
+.monitor-card {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+  color: var(--white);
+  padding: 96px 80px;
+  border-radius: 28px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(10, 31, 61, 0.18);
+}
+@media (max-width: 768px) {
+  .monitor-card { padding: 64px 36px; border-radius: 20px; }
+}
+.monitor-card::before {
+  content: '';
+  position: absolute;
+  bottom: -150px; right: -150px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(184, 149, 106, 0.25) 0%, transparent 70%);
+}
+.monitor-card::after {
+  content: '';
+  position: absolute;
+  top: -100px; left: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(184, 149, 106, 0.1) 0%, transparent 70%);
+}
+.monitor-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.32em;
+  color: var(--gold-light);
+  margin-bottom: 28px;
+  padding: 10px 18px;
+  background: rgba(184, 149, 106, 0.18);
+  border-radius: 100px;
+  border: 1px solid rgba(184, 149, 106, 0.3);
+  position: relative;
+}
+.monitor-tag::before {
+  content: ''; display: inline-block;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold-light); animation: pulse 2s infinite;
+}
+.monitor-card h2 {
+  font-size: clamp(28px, 4vw, 40px);
+  color: var(--white);
+  margin-bottom: 28px;
+  position: relative;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+.monitor-card .monitor-lead {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 48px;
+  line-height: 2.1;
+  max-width: 660px;
+  position: relative;
+  font-weight: 400;
+}
+.monitor-benefits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 56px;
+  position: relative;
+}
+@media (max-width: 768px) {
+  .monitor-benefits { grid-template-columns: 1fr; }
+}
+.monitor-benefit {
+  padding: 28px 24px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s;
+}
+.monitor-benefit:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(184, 149, 106, 0.3);
+  transform: translateY(-2px);
+}
+.monitor-benefit .benefit-icon { font-size: 30px; margin-bottom: 14px; }
+.monitor-benefit h4 {
+  font-size: 16px; font-weight: 700;
+  color: var(--white);
+  margin-bottom: 10px;
+  letter-spacing: -0.005em;
+}
+.monitor-benefit p {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.85;
+}
+.monitor-cta-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--gold);
+  color: var(--navy-deep);
+  padding: 20px 40px;
+  border-radius: 100px;
+  font-weight: 700; font-size: 15px;
+  position: relative;
+  transition: all 0.3s;
+  letter-spacing: 0.02em;
+}
+.monitor-cta-btn:hover {
+  background: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(184, 149, 106, 0.5);
+}
+.monitor-cta-btn .arrow { transition: transform 0.3s; }
+.monitor-cta-btn:hover .arrow { transform: translateX(6px); }
+
+/* Pricing section */
+.pricing { background: var(--bg); }
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-top: 80px;
+}
+@media (max-width: 768px) { .pricing-grid { grid-template-columns: 1fr; gap: 20px; } }
+.pricing-card {
+  background: var(--white);
+  padding: 56px 36px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  position: relative;
+  transition: all 0.4s;
+}
+.pricing-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 56px rgba(10, 31, 61, 0.1);
+}
+.pricing-card.featured {
+  border: 2px solid var(--navy);
+  box-shadow: 0 24px 56px rgba(10, 31, 61, 0.12);
+  background: var(--white);
+}
+.pricing-card.featured::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(184, 149, 106, 0.04) 100%);
+  border-radius: 20px;
+  pointer-events: none;
+}
+.pricing-card .featured-badge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--navy); color: var(--white);
+  padding: 7px 18px; border-radius: 100px;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.22em;
+}
+.pricing-card h3 {
+  font-size: 20px; font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+  font-family: 'Noto Sans JP', sans-serif;
+  letter-spacing: -0.005em;
+}
+.pricing-card .plan-desc {
+  font-size: 13px; color: var(--text-light);
+  margin-bottom: 36px;
+  line-height: 1.6;
+}
+.pricing-card .price-wrap {
+  margin-bottom: 36px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--border);
+}
+.pricing-card .price {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px; font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+.pricing-card .price-unit {
+  font-size: 13px; color: var(--text-mid);
+  margin-left: 6px;
+}
+.pricing-card ul { list-style: none; margin: 0 0 0; }
+.pricing-card li {
+  font-size: 14px; color: var(--text);
+  padding: 11px 0;
+  display: flex; align-items: flex-start; gap: 10px;
+  line-height: 1.6;
+}
+.pricing-card li::before {
+  content: '';
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--gold);
+  background-image: linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%);
+  flex-shrink: 0;
+  margin-top: 4px;
+  position: relative;
+}
+.pricing-card li::after {
+  content: '✓';
+  position: absolute;
+  margin-left: 4px;
+  margin-top: 2px;
+  color: var(--white);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* FAQ section */
+.faq { background: var(--white); }
+.faq-list { max-width: 820px; margin: 80px auto 0; }
+.faq-item {
+  border-top: 1px solid var(--border);
+  padding: 40px 0;
+}
+.faq-item:last-child { border-bottom: 1px solid var(--border); }
+.faq-q {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 700; font-size: 19px;
+  color: var(--navy);
+  margin-bottom: 18px;
+  display: flex; gap: 16px;
+  letter-spacing: -0.01em;
+  line-height: 1.6;
+}
+.faq-q::before {
+  content: 'Q';
+  font-family: 'Playfair Display', serif;
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.faq-a {
+  font-size: 15px;
+  color: var(--text-mid);
+  line-height: 2.1;
+  padding-left: 38px;
+}
+
+/* CTA Final */
+.cta-final {
+  background: linear-gradient(180deg, var(--bg-cream) 0%, var(--bg-warm) 100%);
+  text-align: center;
+  padding: 160px 0;
+  position: relative;
+  overflow: hidden;
+}
+.cta-final::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(184, 149, 106, 0.1) 0%, transparent 60%);
+}
+.cta-final .container { position: relative; z-index: 1; }
+.cta-final h2 {
+  font-size: clamp(30px, 4.5vw, 48px);
+  color: var(--navy);
+  margin-bottom: 28px;
+  letter-spacing: -0.015em;
+  line-height: 1.4;
+}
+.cta-final p {
+  font-size: 16px;
+  color: var(--text-mid);
+  margin-bottom: 56px;
+  line-height: 2.1;
+}
+.cta-final .btn-primary {
+  font-size: 16px;
+  padding: 24px 52px;
+}
+.cta-mail {
+  margin-top: 36px;
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 2;
+}
+.cta-mail a {
+  color: var(--navy);
+  border-bottom: 1px solid var(--navy);
+  padding-bottom: 1px;
+  font-weight: 500;
+}
+
+/* Footer */
+.footer {
+  background: var(--navy-deep);
+  color: rgba(255, 255, 255, 0.7);
+  padding: 80px 0 36px;
+  text-align: center;
+}
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  color: var(--white);
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.footer-logo .dot { color: var(--gold); }
+.footer-logo-jp {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.2em;
+  margin-bottom: 24px;
+}
+.footer-tagline {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 36px;
+  letter-spacing: 0.1em;
+  font-family: 'Noto Serif JP', serif;
+}
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 28px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.05em;
+}
+.footer-links { margin-bottom: 18px; font-size: 13px; }
+.footer-links a {
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 14px;
+}
+.footer-links a:hover { color: var(--gold-light); }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="container header-inner">
+    <div class="logo-wrap">
+      <div class="logo">Posture<span class="dot">·</span>AI</div>
+      <span class="logo-jp">ポスチャーエーアイ</span>
+    </div>
+    <a href="#monitor" class="btn-link">先行導入院 募集中</a>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-inner">
+    <span class="hero-tag fade-in">For Therapy Clinics</span>
+    <h1 class="fade-in delay-1">施術効果を、<br><em>"見える化"</em>する。</h1>
+    <p class="lead fade-in delay-2">
+      写真6枚で、AIが姿勢をミリ単位で分析。<br>
+      ビフォーアフターをQRコードで患者と共有できる、<br>
+      施術院のためのAI姿勢分析サービスです。
+    </p>
+    <div class="hero-buttons fade-in delay-3">
+      <a href="#monitor" class="btn-primary">先行導入院に申し込む <span class="arrow">→</span></a>
+      <a href="#features" class="btn-secondary">機能を見る</a>
+    </div>
+    <div class="hero-meta fade-in delay-4">
+      <span>•</span>クレカ登録不要<span>•</span>7日間無料<span>•</span>解約自由<span>•</span>
+    </div>
+  </div>
+</section>
+
+<!-- Reality -->
+<section class="section reality">
+  <div class="container">
+    <span class="section-tag">The Reality</span>
+    <h2 class="section-title">施術院の経営、<br>見えない壁にぶつかっていませんか？</h2>
+    <p class="section-subtitle">
+      多くの院長が、技術はあるのに伝えられず、リピートされず、口コミも広がらない現実に直面しています。
+    </p>
+
+    <div class="reality-grid">
+      <div class="reality-card">
+        <span class="number">01</span>
+        <h3>効果が、伝わらない。</h3>
+        <p>「だいぶ良くなりましたね」では、患者の脳に何も残らない。主観的な言葉では、価値は届かない。施術の真価は、客観的な"形"に変えてはじめて伝わります。</p>
+      </div>
+      <div class="reality-card">
+        <span class="number">02</span>
+        <h3>リピートが、続かない。</h3>
+        <p>3回目から急に来なくなる。原因は技術ではなく、"次回の理由"を提示できていないこと。データがあれば、通院は計画になります。</p>
+      </div>
+      <div class="reality-card">
+        <span class="number">03</span>
+        <h3>差別化が、できない。</h3>
+        <p>「うちは技術が違う」と言っても、患者には判断できない。比較できないものは、選ばれない。可視化された差別化が、唯一の答えです。</p>
+      </div>
+      <div class="reality-card">
+        <span class="number">04</span>
+        <h3>口コミが、広がらない。</h3>
+        <p>満足してくれているはずなのに、紹介が来ない。シェアできる"形"がないと、口コミは生まれない。QRコードが、最強の拡散装置になります。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Solution -->
+<section class="section solution" id="features">
+  <div class="container">
+    <span class="section-tag">The Solution</span>
+    <h2 class="section-title">AIが、施術の"成果"を<br>客観的なデータに変える。</h2>
+    <p class="section-subtitle">
+      患者の体に、これまで見えなかった"変化の数値"を提示する。
+      それが、リピート・口コミ・差別化、すべての起点になります。
+    </p>
+
+    <div class="solution-flow">
+      <div class="flow-card">
+        <span class="step-num">STEP 01</span>
+        <div class="icon-emoji">📸</div>
+        <h4>撮影</h4>
+        <p>スマホで6枚撮影<br>所要1分</p>
+      </div>
+      <div class="flow-card">
+        <span class="step-num">STEP 02</span>
+        <div class="icon-emoji">🤖</div>
+        <h4>AI分析</h4>
+        <p>26ポイント自動検出<br>30秒で診断完了</p>
+      </div>
+      <div class="flow-card">
+        <span class="step-num">STEP 03</span>
+        <div class="icon-emoji">📊</div>
+        <h4>結果表示</h4>
+        <p>姿勢スコアを<br>その場で提示</p>
+      </div>
+      <div class="flow-card">
+        <span class="step-num">STEP 04</span>
+        <div class="icon-emoji">📱</div>
+        <h4>QR共有</h4>
+        <p>患者が自宅でも<br>レポートを見返せる</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Deep -->
+<section class="section features">
+  <div class="container">
+    <span class="section-tag">Features</span>
+    <h2 class="section-title">施術院が必要とする機能を、<br>すべて1つに。</h2>
+
+    <div class="features-grid">
+      <div class="feature-large">
+        <span class="feat-num">01</span>
+        <h3>AI姿勢分析エンジン</h3>
+        <p>
+          6枚の写真から、AIが26の関節ポイントをミリ単位で検出。
+          肩のズレ・骨盤の傾き・猫背指数など、施術現場で必要な指標を自動算出します。
+        </p>
+        <span class="feature-tag">26ポイント検出</span>
+        <span class="feature-tag">30秒分析</span>
+        <span class="feature-tag">スマホ対応</span>
+      </div>
+
+      <div class="feature-large">
+        <span class="feat-num">02</span>
+        <h3>QRコードレポート共有</h3>
+        <p>
+          診断結果はQRコードで瞬時に共有。
+          患者は自分のスマホで結果を保存し、家族にも見せられる。
+          自然な口コミの起点になります。
+        </p>
+        <span class="feature-tag">QR共有</span>
+        <span class="feature-tag">スマホ閲覧</span>
+        <span class="feature-tag">画像保存可</span>
+      </div>
+
+      <div class="feature-large">
+        <span class="feat-num">03</span>
+        <h3>患者カルテ管理</h3>
+        <p>
+          来院履歴・姿勢スコアの推移・施術メモを一元管理。
+          過去の診断と並べて比較表示できるので、ビフォーアフターを通院ごとに振り返れます。
+        </p>
+        <span class="feature-tag">電子カルテ</span>
+        <span class="feature-tag">履歴比較</span>
+        <span class="feature-tag">スコア推移</span>
+      </div>
+
+      <div class="feature-large">
+        <span class="feat-num">04</span>
+        <h3>LINE自動送信</h3>
+        <p>
+          診断レポートを患者のLINEに自動配信。
+          来院後のフォロー・次回予約のリマインドまで、手間ゼロで再来院を促進します。
+        </p>
+        <span class="feature-tag">LINE連携</span>
+        <span class="feature-tag">自動配信</span>
+        <span class="feature-tag">リマインド</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Specs section - Innovation feel -->
+<section class="section specs">
+  <div class="container">
+    <span class="section-tag">Innovation</span>
+    <h2 class="section-title">他にはない、<br>AIテクノロジーの精度と速度。</h2>
+    <p class="section-subtitle">
+      数字が物語る、PostureAIの実力。<br>
+      最先端のAI技術が、施術現場の常識を塗り替えます。
+    </p>
+
+    <div class="specs-grid">
+      <div class="spec-item">
+        <span class="spec-value">26</span>
+        <span class="spec-label">関節ポイントを<br>自動検出</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-value">30s</span>
+        <span class="spec-label">AI診断<br>所要時間</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-value">6</span>
+        <span class="spec-label">撮影枚数<br>（前後左右上下）</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-value">∞</span>
+        <span class="spec-label">プロプランは<br>分析回数無制限</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-value">TLS</span>
+        <span class="spec-label">通信暗号化<br>院ごとに完全分離</span>
+      </div>
+      <div class="spec-item">
+        <span class="spec-value">0</span>
+        <span class="spec-label">専用機材不要<br>スマホ・タブレットでOK</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Founder Story -->
+<section class="section story">
+  <div class="container">
+    <div class="story-content">
+      <span class="section-tag">Story</span>
+      <h2 class="section-title">なぜ、PostureAIを<br>作ったのか。</h2>
+
+      <p class="story-text">
+        私が施術院の世界で見てきたのは、「技術は確かにあるのに、患者にうまく伝わらない」現実でした。
+      </p>
+      <p class="story-text">
+        ベテランの院長ほど、感覚で姿勢の変化を捉えています。でもその"見立て"を、患者に伝える共通言語がなかった。
+      </p>
+      <p class="story-text">
+        AIに姿勢を客観的に分析させ、ビフォーアフターを誰の目にも見える形にできれば、施術院の価値は一気に伝わるはずだ ── そう信じて、PostureAIを作りました。
+      </p>
+      <p class="story-text">
+        技術を、もっと正当に評価される時代へ。その手助けができたら、私は嬉しいです。
+      </p>
+
+      <div class="story-signature">
+        <strong>松坂 英希</strong>
+        PostureAI 開発者
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Monitor section (先行導入院) -->
+<section class="section monitor" id="monitor">
+  <div class="container">
+    <div class="monitor-card">
+      <span class="monitor-tag">Limited Offer</span>
+      <h2>先行導入院、<br>10院限定で募集します。</h2>
+      <p class="monitor-lead">
+        PostureAIは現在、本格ローンチに向けた最終調整中です。<br>
+        導入第1期となる先行10院に、特別オファーをご用意しました。
+      </p>
+
+      <div class="monitor-benefits">
+        <div class="monitor-benefit">
+          <div class="benefit-icon">💎</div>
+          <h4>初年度50%OFF</h4>
+          <p>スタンダードプラン¥19,800が、初年度¥9,800/月で利用可能。</p>
+        </div>
+        <div class="monitor-benefit">
+          <div class="benefit-icon">🛠️</div>
+          <h4>導入サポート無料</h4>
+          <p>オンライン個別セットアップ・運用相談を初月無料で提供。</p>
+        </div>
+        <div class="monitor-benefit">
+          <div class="benefit-icon">🎯</div>
+          <h4>機能リクエスト権</h4>
+          <p>欲しい機能を直接リクエスト。優先的に開発に反映します。</p>
+        </div>
+      </div>
+
+      <a href="https://forms.gle/FaSTFuVTiUKY6Et77" target="_blank" rel="noopener" class="monitor-cta-btn">先行導入院に応募する <span class="arrow">→</span></a>
+      <p style="margin-top: 28px; font-size: 12px; color: rgba(255,255,255,0.6); position: relative; line-height: 1.8;">
+        ※先行導入院には、導入後アンケートへのご協力・実名での導入事例ご掲載をお願いする場合があります。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="section pricing" id="pricing">
+  <div class="container">
+    <span class="section-tag">Pricing</span>
+    <h2 class="section-title">シンプルで、わかりやすい料金。</h2>
+    <p class="section-subtitle">
+      契約期間の縛りなし、いつでも解約可能。
+      まずは7日間の無料体験から始められます。
+    </p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3>Starter</h3>
+        <p class="plan-desc">個人院・お試し導入向け</p>
+        <div class="price-wrap">
+          <span class="price">¥9,800</span><span class="price-unit">/月</span>
+        </div>
+        <ul>
+          <li>月50回まで分析</li>
+          <li>AI姿勢診断</li>
+          <li>QRレポート共有</li>
+          <li>ビフォーアフター比較</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card featured">
+        <span class="featured-badge">RECOMMENDED</span>
+        <h3>Standard</h3>
+        <p class="plan-desc">安定運営の中規模院向け</p>
+        <div class="price-wrap">
+          <span class="price">¥19,800</span><span class="price-unit">/月</span>
+        </div>
+        <ul>
+          <li>月150回まで分析</li>
+          <li>Starterの全機能</li>
+          <li>患者カルテ管理</li>
+          <li>来院履歴・スコア推移</li>
+          <li>施術メモ保存</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card">
+        <h3>Pro</h3>
+        <p class="plan-desc">多店舗・本格運用向け</p>
+        <div class="price-wrap">
+          <span class="price">¥29,800</span><span class="price-unit">/月</span>
+        </div>
+        <ul>
+          <li>分析回数 無制限</li>
+          <li>Standardの全機能</li>
+          <li>経営ダッシュボード</li>
+          <li>LINE自動送信</li>
+          <li>スタッフ複数アカウント</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="text-align: center; margin-top: 56px; font-size: 13px; color: var(--text-light); line-height: 2;">
+      全プラン共通：7日間無料体験 / クレカ登録不要 / いつでも解約OK<br>
+      不足時の追加パック：30回 ¥2,980 / 100回 ¥7,980
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq">
+  <div class="container">
+    <span class="section-tag">FAQ</span>
+    <h2 class="section-title">よくある質問。</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <p class="faq-q">専門知識やITスキルは必要ですか？</p>
+        <p class="faq-a">不要です。スマホやタブレットで写真を撮るだけ。受付スタッフでも数分で操作を覚えられます。</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">設置工事や専用機材は必要ですか？</p>
+        <p class="faq-a">一切不要です。お持ちのスマホ・タブレット・PCのブラウザですぐ使えます。</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">解約は自由にできますか？</p>
+        <p class="faq-a">はい、いつでも解約可能です。最低契約期間や違約金は一切ありません。</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">無料体験中に料金は発生しますか？</p>
+        <p class="faq-a">7日間は完全無料。クレジットカードの登録も不要です。継続のご意思があれば、その時に正式登録ください。</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">AI診断の精度はどのくらいですか？</p>
+        <p class="faq-a">26の関節ポイントをミリ単位で検出します。姿勢スコアは内部アルゴリズムで算出し、施術前後の変化を客観的に提示できます。</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">患者の写真データのプライバシーは大丈夫ですか？</p>
+        <p class="faq-a">通信は全てTLSで暗号化、データは各院ごとに完全に分離して保管されます。第三者に共有されることは一切ありません。</p>
+      </div>
+      <div class="faq-item">
+        <p class="faq-q">プランは途中で変更できますか？</p>
+        <p class="faq-a">はい、いつでも変更可能です。Starterから始めて、患者数が増えたらStandard・Proにアップグレードできます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Final -->
+<section class="cta-final" id="cta">
+  <div class="container">
+    <h2>先行導入院、10院限定。<br>あなたの院も、その1つに。</h2>
+    <p>初年度50%OFF・導入サポート無料・機能リクエスト権<br>応募締切は予告なく終了します。お早めにどうぞ。</p>
+    <a href="https://forms.gle/FaSTFuVTiUKY6Et77" target="_blank" rel="noopener" class="btn-primary">先行導入院に応募する <span class="arrow">→</span></a>
+    <p class="cta-mail">
+      または直接メールでも：<br>
+      <a href="mailto:postureai.karadacare@gmail.com">postureai.karadacare@gmail.com</a>
+    </p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-logo">Posture<span class="dot">·</span>AI</div>
+    <div class="footer-logo-jp">ポスチャーエーアイ</div>
+    <p class="footer-tagline">施術効果を、見える化する。</p>
+    <div class="footer-links">
+      <a href="#">利用規約</a>
+      <a href="#">プライバシーポリシー</a>
+      <a href="#">特定商取引法に基づく表記</a>
+    </div>
+    <div class="footer-bottom">
+      © 2026 PostureAI. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
