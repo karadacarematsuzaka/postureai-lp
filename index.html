@@ -1895,21 +1895,27 @@ a { color: inherit; text-decoration: none; transition: all 0.3s ease; }
   </div>
 </header>
 
-<!-- Hero -->
-<section class="hero">
-  <div class="container hero-inner">
-    <span class="hero-tag fade-in">For Therapy Clinics</span>
-    <h1 class="fade-in delay-1">施術効果を、<br><em>"見える化"</em>する。</h1>
-    <p class="lead fade-in delay-2">
+<!-- Hero (実写) -->
+<section class="hero" style="position:relative;overflow:hidden;color:#fff;">
+  <div style="position:absolute;inset:0;z-index:0;">
+    <img src="https://images.pexels.com/photos/5794033/pexels-photo-5794033.jpeg?auto=compress&cs=tinysrgb&w=1600"
+         alt="施術院での姿勢分析"
+         style="width:100%;height:100%;object-fit:cover;filter:brightness(0.55) saturate(1.05);">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,12,55,0.40) 0%,rgba(15,12,55,0.88) 95%);"></div>
+  </div>
+  <div class="container hero-inner" style="position:relative;z-index:1;">
+    <span class="hero-tag fade-in" style="background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.32);backdrop-filter:blur(8px);color:#fff;">For Therapy Clinics</span>
+    <h1 class="fade-in delay-1" style="color:#fff;">施術効果を、<br><em style="color:#FCD34D;font-style:normal;">"見える化"</em>する。</h1>
+    <p class="lead fade-in delay-2" style="color:rgba(255,255,255,0.92);">
       写真6枚で、AIが姿勢をミリ単位で分析。<br>
       ビフォーアフターをQRコードで患者と共有できる、<br>
       施術院のためのAI姿勢分析サービスです。
     </p>
     <div class="hero-buttons fade-in delay-3">
       <a href="#monitor" class="btn-primary">先行導入院に申し込む <span class="arrow">→</span></a>
-      <a href="#features" class="btn-secondary">機能を見る</a>
+      <a href="#features" class="btn-secondary" style="background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.5);color:#fff;backdrop-filter:blur(8px);">機能を見る</a>
     </div>
-    <div class="hero-meta fade-in delay-4">
+    <div class="hero-meta fade-in delay-4" style="color:rgba(255,255,255,0.75);">
       <span>•</span>クレカ登録不要<span>•</span>7日間無料<span>•</span>解約自由<span>•</span>
     </div>
   </div>
@@ -1961,24 +1967,40 @@ a { color: inherit; text-decoration: none; transition: all 0.3s ease; }
 
     <div class="solution-flow">
       <div class="flow-card">
+        <div style="position:relative;height:140px;border-radius:10px;overflow:hidden;margin-bottom:14px;">
+          <img src="https://images.pexels.com/photos/23224766/pexels-photo-23224766.jpeg?auto=compress&cs=tinysrgb&w=600" style="width:100%;height:100%;object-fit:cover;" alt="撮影">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.45) 100%);"></div>
+        </div>
         <span class="step-num">STEP 01</span>
         <div class="icon-emoji">📸</div>
         <h4>撮影</h4>
         <p>スマホで6枚撮影<br>所要1分</p>
       </div>
       <div class="flow-card">
+        <div style="position:relative;height:140px;border-radius:10px;overflow:hidden;margin-bottom:14px;">
+          <img src="https://images.pexels.com/photos/8555324/pexels-photo-8555324.jpeg?auto=compress&cs=tinysrgb&w=600" style="width:100%;height:100%;object-fit:cover;" alt="AI分析">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.45) 100%);"></div>
+        </div>
         <span class="step-num">STEP 02</span>
         <div class="icon-emoji">🤖</div>
         <h4>AI分析</h4>
         <p>26ポイント自動検出<br>30秒で診断完了</p>
       </div>
       <div class="flow-card">
+        <div style="position:relative;height:140px;border-radius:10px;overflow:hidden;margin-bottom:14px;">
+          <img src="https://images.pexels.com/photos/4506111/pexels-photo-4506111.jpeg?auto=compress&cs=tinysrgb&w=600" style="width:100%;height:100%;object-fit:cover;" alt="結果">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.45) 100%);"></div>
+        </div>
         <span class="step-num">STEP 03</span>
         <div class="icon-emoji">📊</div>
         <h4>結果表示</h4>
         <p>姿勢スコアを<br>その場で提示</p>
       </div>
       <div class="flow-card">
+        <div style="position:relative;height:140px;border-radius:10px;overflow:hidden;margin-bottom:14px;">
+          <img src="https://images.pexels.com/photos/4266931/pexels-photo-4266931.jpeg?auto=compress&cs=tinysrgb&w=600" style="width:100%;height:100%;object-fit:cover;" alt="共有">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.45) 100%);"></div>
+        </div>
         <span class="step-num">STEP 04</span>
         <div class="icon-emoji">📱</div>
         <h4>QR共有</h4>
@@ -2350,8 +2372,14 @@ a { color: inherit; text-decoration: none; transition: all 0.3s ease; }
 </section>
 
 <!-- Monitor section (先行導入院) -->
-<section class="section monitor" id="monitor">
-  <div class="container">
+<section class="section monitor" id="monitor" style="position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;z-index:0;">
+    <img src="https://images.pexels.com/photos/7663029/pexels-photo-7663029.jpeg?auto=compress&cs=tinysrgb&w=1600"
+         alt="施術院"
+         style="width:100%;height:100%;object-fit:cover;filter:brightness(0.4) saturate(1.1);">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(76,29,149,0.85) 0%,rgba(15,12,55,0.92) 100%);"></div>
+  </div>
+  <div class="container" style="position:relative;z-index:1;">
     <div class="monitor-card">
       <span class="monitor-tag">Limited Offer</span>
       <h2>先行導入院、<br>10院限定で募集します。</h2>
@@ -2489,15 +2517,21 @@ a { color: inherit; text-decoration: none; transition: all 0.3s ease; }
   </div>
 </section>
 
-<!-- CTA Final -->
-<section class="cta-final" id="cta">
-  <div class="container">
-    <h2>先行導入院、10院限定。<br>あなたの院も、その1つに。</h2>
-    <p>初年度50%OFF・導入サポート無料・機能リクエスト権<br>応募締切は予告なく終了します。お早めにどうぞ。</p>
+<!-- CTA Final (実写) -->
+<section class="cta-final" id="cta" style="position:relative;overflow:hidden;color:#fff;">
+  <div style="position:absolute;inset:0;z-index:0;">
+    <img src="https://images.pexels.com/photos/5793649/pexels-photo-5793649.jpeg?auto=compress&cs=tinysrgb&w=1600"
+         alt="施術院"
+         style="width:100%;height:100%;object-fit:cover;filter:brightness(0.45) saturate(1.05);">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(76,29,149,0.55) 0%,rgba(15,12,55,0.92) 100%);"></div>
+  </div>
+  <div class="container" style="position:relative;z-index:1;">
+    <h2 style="color:#fff;">先行導入院、10院限定。<br>あなたの院も、その1つに。</h2>
+    <p style="color:rgba(255,255,255,0.9);">初年度50%OFF・導入サポート無料・機能リクエスト権<br>応募締切は予告なく終了します。お早めにどうぞ。</p>
     <a href="https://forms.gle/FaSTFuVTiUKY6Et77" target="_blank" rel="noopener" class="btn-primary">先行導入院に応募する <span class="arrow">→</span></a>
-    <p class="cta-mail">
+    <p class="cta-mail" style="color:rgba(255,255,255,0.85);">
       または直接メールでも：<br>
-      <a href="mailto:postureai.karadacare@gmail.com">postureai.karadacare@gmail.com</a>
+      <a href="mailto:postureai.karadacare@gmail.com" style="color:#FCD34D;">postureai.karadacare@gmail.com</a>
     </p>
   </div>
 </section>
